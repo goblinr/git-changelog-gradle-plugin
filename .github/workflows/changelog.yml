@@ -1,0 +1,67 @@
+name: Changelog generate
+
+on:
+  push:
+    branches:
+      - develop
+      - 'releases/*'
+
+jobs:
+  changelog:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v2
+
+    - name: Set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+
+    - name: Run changelog gradle task
+      run: |
+        gradle test
+        gradle changelog
+      env:
+        TOKEN: ${{ secrets.ACCESS_TOKEN }}
+
+    - uses: actions/upload-artifact@v2
+      if: failure()
+      with:
+        name: failed-tests
+        path: plugin/build/reports/tests/
+
+    - uses: actions/upload-artifact@v2
+      with:
+        name: changelog
+        path: build/outputs/changelog.md
+
+  publish:
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/releases/')
+    needs: changelog
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up JDK 1.8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - uses: actions/download-artifact@v2
+        with:
+          name: changelog
+
+      - name: Run publish gradle task
+        run: gradle publishPlugins -Pgradle.publish.key=${{ secrets.KEY }} -Pgradle.publish.secret=${{ secrets.SECRET }}
+
+      - uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
+          body_path: build/outputs/changelog.md
+          draft: false
+          prerelease: true

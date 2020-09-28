@@ -1,5 +1,5 @@
 plugins {
-    id "com.a65apps.changelog"
+    id 'com.a65apps.changelog'
 }
 
 changelog {

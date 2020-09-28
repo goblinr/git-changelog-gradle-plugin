@@ -1,1 +1,3 @@
 rootProject.name = "git-changelog-gradle-plugin"
+
+includeBuild "./plugin"

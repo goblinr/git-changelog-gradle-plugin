@@ -1,0 +1,12 @@
+plugins {
+    id "com.a65apps.changelog"
+}
+
+changelog {
+    def token = System.getenv().get("TOKEN")
+
+    currentReleaseBranch = "develop"
+    lastReleaseBranch = "master"
+    templateFile = "template/changelog.mustache"
+    accessToken = token
+}

@@ -1,0 +1,37 @@
+plugins {
+    id 'org.jetbrains.kotlin.jvm' version '1.3.72'
+    id 'java-gradle-plugin'
+}
+
+def kotlinVersion = "1.3.72"
+
+repositories {
+    jcenter()
+}
+
+test {
+    useJUnitPlatform {
+        includeEngines 'spek2'
+    }
+}
+
+dependencies {
+    compileOnly gradleApi()
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
+    implementation 'org.ajoberstar.grgit:grgit-core:4.0.2'
+    implementation 'com.github.spullara.mustache.java:compiler:0.9.6'
+
+    testImplementation "io.mockk:mockk:1.10.0"
+    testImplementation "org.spekframework.spek2:spek-dsl-jvm:2.0.12"
+    testRuntimeOnly "org.spekframework.spek2:spek-runner-junit5:2.0.12"
+    testRuntimeOnly "org.jetbrains.kotlin:kotlin-reflect:$kotlinVersion"
+}
+
+gradlePlugin {
+    plugins {
+        changelog {
+            id = 'com.a65apps.changelog'
+            implementationClass = 'com.a65apps.changelog.ChangelogPlugin'
+        }
+    }
+}

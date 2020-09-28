@@ -42,7 +42,7 @@ gradlePlugin {
 
 pluginBundle {
     website = 'https://github.com/goblinr/git-changelog-gradle-plugin'
-    vcsUrl = 'https://github.com/goblinr/git-changelog-gradle-plugin'
+    vcsUrl = 'https://github.com/goblinr/git-changelog-gradle-plugin.git'
     description = 'Plugin for automatic generation of changelog from git repository'
     tags = ['changelog', 'git']
 

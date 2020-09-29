@@ -122,6 +122,11 @@ signing {
 
 Properties localProperties() {
     Properties properties = new Properties()
-    properties.load(project.file('local.properties').newDataInputStream())
+    def file = project.file('local.properties')
+    if (!file.exists()) {
+        return properties
+    }
+
+    properties.load(file.newDataInputStream())
     return properties
 }

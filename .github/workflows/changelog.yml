@@ -3,6 +3,7 @@ name: Changelog generate
 on:
   push:
     branches:
+      - master
       - develop
       - 'releases/*'
     tags:

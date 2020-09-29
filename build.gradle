@@ -6,7 +6,7 @@ changelog {
     def token = System.getenv().get("TOKEN")
 
     currentReleaseBranch = "develop"
-    lastReleaseBranch = "releases/2"
+    lastReleaseBranch = "releases/3"
     templateFile = "template/changelog.mustache"
     accessToken = token
 }

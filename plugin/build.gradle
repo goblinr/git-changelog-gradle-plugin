@@ -3,7 +3,6 @@ plugins {
     id "com.gradle.plugin-publish" version "0.12.0"
     id 'java-gradle-plugin'
     id 'maven-publish'
-    id 'signing'
     id 'jacoco'
     id "pl.droidsonroids.jacoco.testkit" version "1.0.7"
 }
@@ -14,7 +13,7 @@ repositories {
     jcenter()
 }
 
-def versionName = '1.1.1'
+def versionName = '1.1.2'
 def groupName = "com.a65apps.changelog"
 
 version = versionName
@@ -111,15 +110,6 @@ publishing {
             }
         }
     }
-}
-
-signing {
-    def properties = localProperties()
-    def signingKeyId = properties.getProperty('sign.keyId') ?: System.getenv("SIGN_KEY_ID")
-    def signingKey = properties.getProperty('sign.key') ?: System.getenv("SIGN_KEY")
-    def signingPassword = properties.getProperty('sign.password') ?: System.getenv("SIGN_PASSWORD")
-    useInMemoryPgpKeys(signingKeyId, signingKey, signingPassword)
-    sign publishing.publications.gpr
 }
 
 Properties localProperties() {

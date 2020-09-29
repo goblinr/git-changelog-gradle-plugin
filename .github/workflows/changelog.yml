@@ -83,7 +83,7 @@ jobs:
           prerelease: true
 
   publish:
-    if: github.event_name == 'push' && startsWith(github.ref, 'v1.')
+    if: github.event_name == 'push' && contains(github.ref, 'v1.')
     needs: changelog
     runs-on: ubuntu-latest
 

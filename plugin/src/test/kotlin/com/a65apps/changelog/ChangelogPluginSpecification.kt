@@ -156,6 +156,7 @@ object ChangelogPluginSpecification : Spek({
                     .withProjectDir(temporaryFolder.root)
                     .forwardOutput()
                     .withArguments("changelog")
+                    .withJaCoCo()
                     .build()
             }
 

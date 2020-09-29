@@ -113,9 +113,6 @@ jobs:
         env:
           TOKEN: ${{ secrets.ACCESS_TOKEN }}
           USERNAME: ${{ secrets.USER_NAME }}
-          SIGN_KEY_ID: ${{ secrets.SIGN_KEY_ID }}
-          SIGN_KEY: ${{ secrets.SIGN_KEY }}
-          SIGN_PASSWORD: ${{ secrets.SIGN_PASSWORD }}
 
       - uses: actions/create-release@v1
         env:

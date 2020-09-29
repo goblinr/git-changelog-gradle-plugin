@@ -20,3 +20,9 @@ jobs:
 
     - name: Run tests
       run: gradle test
+
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: plugin/build/jacoco/test/jacocoTestReport.xml
+        fail_ci_if_error: true

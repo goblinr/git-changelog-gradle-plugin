@@ -38,6 +38,12 @@ jobs:
         name: changelog
         path: build/outputs/changelog.md
 
+    - uses: codecov/codecov-action@v1
+      with:
+        token: ${{ secrets.CODECOV_TOKEN }}
+        file: plugin/build/jacoco/test/jacocoTestReport.xml
+        fail_ci_if_error: true
+
   publish_pre_release:
     if: github.event_name == 'push' && startsWith(github.ref, 'refs/heads/releases/')
     needs: changelog

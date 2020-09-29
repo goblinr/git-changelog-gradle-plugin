@@ -4,6 +4,8 @@ plugins {
     id 'java-gradle-plugin'
     id 'maven-publish'
     id 'signing'
+    id 'jacoco'
+    id "pl.droidsonroids.jacoco.testkit" version "1.0.7"
 }
 
 def kotlinVersion = "1.3.72"
@@ -129,4 +131,24 @@ Properties localProperties() {
 
     properties.load(file.newDataInputStream())
     return properties
+}
+
+jacoco {
+    toolVersion = "0.8.5"
+    reportsDir = file("$buildDir/jacoco")
+}
+
+jacocoTestReport {
+    reports {
+        xml.enabled true
+        csv.enabled false
+        html.destination file("${buildDir}/jacocoHtml")
+    }
+}
+
+test {
+    finalizedBy jacocoTestReport // report is always generated after tests run
+}
+jacocoTestReport {
+    dependsOn test // tests are required to run before generating the report
 }

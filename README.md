@@ -1,11 +1,15 @@
 # Git changelog gradle plugin
 Plugin for automatic generation of changelog from git repository
 
+[![Actions Status](https://github.com/goblinr/git-changelog-gradle-plugin/workflows/Changelog%20generate/badge.svg)](https://github.com/goblinr/git-changelog-gradle-plugin/actions)
+[![Actions Status](https://github.com/goblinr/git-changelog-gradle-plugin/workflows/Changelog%20test/badge.svg)](https://github.com/goblinr/git-changelog-gradle-plugin/actions)
+[![codecov](https://codecov.io/gh/goblinr/git-changelog-gradle-plugin/branch/master/graph/badge.svg)](https://codecov.io/gh/goblinr/git-changelog-gradle-plugin)
+
 ## Usage example
 
 ```groovy
 plugins {
-    id 'com.a65apps.changelog' version '1.1'
+    id 'com.a65apps.changelog' version '1.1.3'
 }
 
 changelog {
@@ -19,6 +23,28 @@ changelog {
     developBranch = 'master'                      // Develop branch, default is 'develop'
 }
 ```
+
+#### Template example
+```handlebars
+# Changelog
+
+## {{title}}
+{{#entries}}
+{{message}}
+{{/entries}}
+
+## Folded
+{{#shortEntries}}
+{{foldId}}
+{{/shortEntries}}
+```
+| field          | description                         |
+| -------------- | ----------------------------------- |
+| `title`        | currentVersion value                |
+| `entries`      | log entries list                    |
+| `message`      | short message from git commit       |
+| `shortEntries` | folded entries list                 |
+| `foldId`       | taskId(first 8 commit hash symbols) |
 
 #### Run task
 ```

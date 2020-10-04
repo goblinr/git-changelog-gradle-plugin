@@ -1,5 +1,6 @@
 package com.a65apps.changelog.domain.model
 
+import com.a65apps.changelog.LogOrder
 import com.a65apps.changelog.domain.entity.Changelog
 import com.a65apps.changelog.domain.entity.ChangelogEntry
 import com.a65apps.changelog.domain.entity.Request
@@ -267,6 +268,82 @@ object ChangelogModelSpecification : Spek({
                             foldId = "2(6ea76e31)"
                         )
                     )
+                )
+            )
+        }
+    }
+
+    Feature("плагин должен уметь управлять пордком вывода записей") {
+        val currentName = "rc_1.1"
+        val rcName = "rc_1.0"
+        val rootCommit = "a78bfa2d3763fd3db814b79a8aac8dcfea323ee3"
+
+        val allCommits = listOf(
+            ChangelogEntry(
+                hash = "d2a85293746a6b11618e2bf1a68747ffdb2593a6",
+                taskId = "1",
+                message = "1: message",
+                foldId = "1(d2a85293)"
+            ),
+            ChangelogEntry(
+                hash = "6ea76e31602cb734e24e094403ac0dabf20b52a2",
+                taskId = "2",
+                message = "2: message",
+                foldId = "2(6ea76e31)"
+            )
+        )
+
+        setUp()
+
+        Scenario("порядок по умолчанию: от первого к последнему") {
+            dataSetUp(
+                currentName = currentName,
+                rcName = rcName,
+                rootCommit = rootCommit,
+                allCommits = allCommits
+            )
+
+            test(
+                request = Request(
+                    currentVersion = currentName,
+                    lastReleaseBranch = rcName,
+                    characterLimit = 100,
+                    entryDash = "-",
+                    templateExtraCharactersLength = 0,
+                    currentReleaseBranch = currentName
+                ),
+                expected = Changelog(
+                    title = currentName,
+                    entries = allCommits.reversed().map {
+                        it.copy(message = "- ${it.message}")
+                    }
+                )
+            )
+        }
+
+        Scenario("порядок: от последнего к первому") {
+            dataSetUp(
+                currentName = currentName,
+                rcName = rcName,
+                rootCommit = rootCommit,
+                allCommits = allCommits
+            )
+
+            test(
+                request = Request(
+                    currentVersion = currentName,
+                    lastReleaseBranch = rcName,
+                    characterLimit = 100,
+                    entryDash = "-",
+                    templateExtraCharactersLength = 0,
+                    currentReleaseBranch = currentName,
+                    order = LogOrder.LAST_TO_FIRST
+                ),
+                expected = Changelog(
+                    title = currentName,
+                    entries = allCommits.map {
+                        it.copy(message = "- ${it.message}")
+                    }
                 )
             )
         }

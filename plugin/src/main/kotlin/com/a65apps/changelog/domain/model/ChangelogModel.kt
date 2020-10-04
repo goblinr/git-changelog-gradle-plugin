@@ -1,5 +1,6 @@
 package com.a65apps.changelog.domain.model
 
+import com.a65apps.changelog.LogOrder
 import com.a65apps.changelog.domain.ChangelogInteractor
 import com.a65apps.changelog.domain.entity.Changelog
 import com.a65apps.changelog.domain.entity.ChangelogEntry
@@ -28,12 +29,18 @@ internal class ChangelogModel(
 
         val log: List<ChangelogEntry>
         log = try {
-            logEntriesRepository.logEntries(rootEntry)
+            var result = logEntriesRepository.logEntries(rootEntry)
                 .filter { it.taskId.isNotBlank() }
                 .filter { !it.message.contains("Merged ") }
                 .filter { !it.message.contains("Merge branch ") }
                 .map { it.copy(message = "${request.entryDash} ${it.message}") }
-                .reversed()
+            when(request.order) {
+                LogOrder.FIRST_TO_LAST -> result = result.reversed()
+                LogOrder.LAST_TO_FIRST -> {
+                    // LogEntriesRepository already log in last to first order
+                }
+            }
+            result
         } catch (e: Exception) {
             e.printStackTrace()
             listOf()

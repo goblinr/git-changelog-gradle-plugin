@@ -1,3 +1,5 @@
+import com.a65apps.changelog.LogOrder
+
 plugins {
     id 'com.a65apps.changelog'
 }
@@ -8,6 +10,7 @@ changelog {
     lastReleaseBranch = "releases/4"
     templateFile = "template/changelog.mustache"
     accessToken = token
+    order = LogOrder.LAST_TO_FIRST
 }
 
 tasks.register('test') {

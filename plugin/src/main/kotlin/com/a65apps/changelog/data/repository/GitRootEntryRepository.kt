@@ -22,13 +22,14 @@ internal class GitRootEntryRepository(
         lastReleaseBranch: String,
         currentReleaseBranch: String
     ): ChangelogEntry {
-        if (!local) {
-            fetch(lastReleaseBranch, currentReleaseBranch)
-        }
         val releaseBranch = if (currentReleaseBranch.isNotBlank()) {
             currentReleaseBranch
         } else {
             info.branch
+        }
+
+        if (!local) {
+            fetch(lastReleaseBranch, releaseBranch)
         }
 
         checkout(lastReleaseBranch)

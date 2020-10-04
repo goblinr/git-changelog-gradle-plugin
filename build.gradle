@@ -12,7 +12,7 @@ repositories {
 changelog {
     def token = System.getenv().get("TOKEN")
 
-    currentVersion = '1.1.4'
+    currentVersion = '1.1.5'
     lastReleaseBranch = "releases/4"
     templateFile = "template/changelog.mustache"
     accessToken = token

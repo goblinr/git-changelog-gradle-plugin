@@ -62,5 +62,6 @@ changelog {
     outputFile = "$buildDir/path/to/changelog.md" // Custom output file path for generated changelog
     entryDash = "*"          // Custom log entry dash, default is '-'
     templateExtraCharactersLength = 29  // Extra character length for fine grained character limit configuration
+    order = LogOrder.LAST_TO_FIRST  // Order of log entries. Default is LogOrder.FIRST_TO_LAST
 }
 ```

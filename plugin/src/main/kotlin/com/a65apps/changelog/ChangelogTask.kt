@@ -45,6 +45,9 @@ open class ChangelogTask : DefaultTask() {
     @get:Input
     var local = false
 
+    @get:Input
+    var order = LogOrder.FIRST_TO_LAST
+
     @OutputFile
     fun getDestination(): File = if (outputFile.isBlank()) {
         project.file("${project.buildDir.path}$DEFAULT_OUTPUT_PATH")
@@ -83,7 +86,8 @@ open class ChangelogTask : DefaultTask() {
                     lastReleaseBranch = lastReleaseBranch,
                     characterLimit = characterLimit,
                     entryDash = entryDash,
-                    templateExtraCharactersLength = templateExtraCharactersLength
+                    templateExtraCharactersLength = templateExtraCharactersLength,
+                    order = order
                 )
             )
         )

@@ -90,6 +90,40 @@ object ChangelogPluginSpecification : Spek({
                 expected = expected
             )
         }
+
+        Scenario("порядок от последнего к первому") {
+            val build = """
+                import com.a65apps.changelog.LogOrder
+                
+                plugins {
+                    id "com.a65apps.changelog"
+                }
+                
+                changelog {
+                    currentVersion = "1.1"
+                    lastReleaseBranch = "rc_1.0"
+                    templateFile = "template/changelog.mustache"
+                    local = true
+                    order = LogOrder.LAST_TO_FIRST
+                }
+            """.trimIndent()
+
+            test(
+                settings = settings,
+                template = template,
+                build = build,
+                expected = """
+                # Changelog
+                
+                ## 1.1
+                - 4: rc_1.1 fix
+                - 3: changes
+                
+                ## Folded
+                
+            """.trimIndent()
+            )
+        }
     }
 })
 

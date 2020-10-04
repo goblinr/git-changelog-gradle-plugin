@@ -14,26 +14,39 @@ open class ChangelogTask : DefaultTask() {
 
     @get:Input
     var currentVersion: String = DEFAULT_CURRENT_VERSION
+
     @get:Input
     var currentReleaseBranch: String = ""
+
     @get:Input
     var lastReleaseBranch: String = ""
+
     @get:Input
     var developBranch: String = DEVELOP_BRANCH
+
     @get:Input
     var characterLimit = DEFAULT_CHARACTER_LIMIT
+
     @get:Input
     var outputFile = ""
+
     @get:Input
     var templateFile = ""
+
     @get:Input
     var entryDash = DEFAULT_ENTRY_DASH
+
     @get:Input
     var templateExtraCharactersLength = 0
+
     @get:Input
     var accessToken = ""
+
     @get:Input
     var local = false
+
+    @get:Input
+    var order = LogOrder.FIRST_TO_LAST
 
     @OutputFile
     fun getDestination(): File = if (outputFile.isBlank()) {
@@ -44,9 +57,6 @@ open class ChangelogTask : DefaultTask() {
 
     @TaskAction
     fun execute() {
-        require(currentReleaseBranch.isNotBlank()) {
-            "please specify currentReleaseBranch"
-        }
         require(lastReleaseBranch.isNotBlank()) {
             "please specify lastReleaseBrunch"
         }
@@ -76,7 +86,8 @@ open class ChangelogTask : DefaultTask() {
                     lastReleaseBranch = lastReleaseBranch,
                     characterLimit = characterLimit,
                     entryDash = entryDash,
-                    templateExtraCharactersLength = templateExtraCharactersLength
+                    templateExtraCharactersLength = templateExtraCharactersLength,
+                    order = order
                 )
             )
         )

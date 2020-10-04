@@ -1,5 +1,6 @@
 package com.a65apps.changelog.domain.model
 
+import com.a65apps.changelog.LogOrder
 import com.a65apps.changelog.domain.ChangelogInteractor
 import com.a65apps.changelog.domain.entity.Changelog
 import com.a65apps.changelog.domain.entity.ChangelogEntry
@@ -7,6 +8,7 @@ import com.a65apps.changelog.domain.entity.Request
 import com.a65apps.changelog.domain.repository.LogEntriesRepository
 import com.a65apps.changelog.domain.repository.RootEntryRepository
 
+@Suppress("TooGenericExceptionCaught")
 internal class ChangelogModel(
     private val rootEntryRepository: RootEntryRepository,
     private val logEntriesRepository: LogEntriesRepository
@@ -28,12 +30,18 @@ internal class ChangelogModel(
 
         val log: List<ChangelogEntry>
         log = try {
-            logEntriesRepository.logEntries(rootEntry)
+            var result = logEntriesRepository.logEntries(rootEntry)
                 .filter { it.taskId.isNotBlank() }
                 .filter { !it.message.contains("Merged ") }
                 .filter { !it.message.contains("Merge branch ") }
                 .map { it.copy(message = "${request.entryDash} ${it.message}") }
-                .reversed()
+            when (request.order) {
+                LogOrder.FIRST_TO_LAST -> result = result.reversed()
+                LogOrder.LAST_TO_FIRST -> {
+                    // LogEntriesRepository already log in last to first order
+                }
+            }
+            result
         } catch (e: Exception) {
             e.printStackTrace()
             listOf()
@@ -41,7 +49,7 @@ internal class ChangelogModel(
         val (entries, shortEntries) = matchToCharacterLimit(
             log = log,
             limit = request.characterLimit - request.currentVersion.length -
-                    request.templateExtraCharactersLength
+                request.templateExtraCharactersLength
         )
 
         return Changelog(

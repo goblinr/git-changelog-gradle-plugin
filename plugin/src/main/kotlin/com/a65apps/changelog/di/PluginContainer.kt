@@ -43,7 +43,7 @@ class PluginContainer(
             project = project,
             git = git.first,
             local = local,
-            head = git.second
+            info = git.second
         )
 
     private fun provideLogEntriesRepository(): LogEntriesRepository =

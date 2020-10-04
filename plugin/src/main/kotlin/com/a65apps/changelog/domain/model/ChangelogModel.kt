@@ -8,6 +8,7 @@ import com.a65apps.changelog.domain.entity.Request
 import com.a65apps.changelog.domain.repository.LogEntriesRepository
 import com.a65apps.changelog.domain.repository.RootEntryRepository
 
+@Suppress("TooGenericExceptionCaught")
 internal class ChangelogModel(
     private val rootEntryRepository: RootEntryRepository,
     private val logEntriesRepository: LogEntriesRepository
@@ -34,7 +35,7 @@ internal class ChangelogModel(
                 .filter { !it.message.contains("Merged ") }
                 .filter { !it.message.contains("Merge branch ") }
                 .map { it.copy(message = "${request.entryDash} ${it.message}") }
-            when(request.order) {
+            when (request.order) {
                 LogOrder.FIRST_TO_LAST -> result = result.reversed()
                 LogOrder.LAST_TO_FIRST -> {
                     // LogEntriesRepository already log in last to first order

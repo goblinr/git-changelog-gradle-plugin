@@ -2,6 +2,11 @@ import com.a65apps.changelog.LogOrder
 
 plugins {
     id 'com.a65apps.changelog'
+    id 'io.gitlab.arturbosch.detekt' version '1.14.1'
+}
+
+repositories {
+    jcenter()
 }
 
 changelog {
@@ -12,6 +17,24 @@ changelog {
     accessToken = token
     order = LogOrder.LAST_TO_FIRST
 }
+
+dependencies {
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.14.1"
+}
+
+detekt {
+    failFast = true
+    buildUponDefaultConfig = true
+    input = files("plugin/src/main/kotlin")
+
+    reports {
+        html.enabled = true
+        xml.enabled = true
+        txt.enabled = true
+    }
+}
+
+tasks.detekt.jvmTarget = "1.8"
 
 tasks.register('test') {
     dependsOn gradle.includedBuild('plugin').task(':test')

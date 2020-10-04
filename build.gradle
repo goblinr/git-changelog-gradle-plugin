@@ -5,7 +5,6 @@ plugins {
 changelog {
     def token = System.getenv().get("TOKEN")
 
-    currentReleaseBranch = "develop"
     lastReleaseBranch = "releases/4"
     templateFile = "template/changelog.mustache"
     accessToken = token

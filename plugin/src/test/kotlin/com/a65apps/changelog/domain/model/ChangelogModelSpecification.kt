@@ -207,8 +207,10 @@ object ChangelogModelSpecification : Spek({
         }
     }
 
-    Feature("плагин должен уметь схлопывать старые коммиты в секцию Fold " +
-            "если не хватает лимита символов") {
+    Feature(
+        "плагин должен уметь схлопывать старые коммиты в секцию Fold " +
+            "если не хватает лимита символов"
+    ) {
         val currentName = "rc_1.1"
         val rcName = "rc_1.0"
         val rootCommit = "a78bfa2d3763fd3db814b79a8aac8dcfea323ee3"

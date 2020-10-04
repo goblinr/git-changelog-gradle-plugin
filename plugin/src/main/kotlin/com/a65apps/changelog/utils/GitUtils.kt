@@ -1,5 +1,6 @@
 package com.a65apps.changelog.utils
 
+import com.a65apps.changelog.domain.entity.JobInfo
 import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.Project
@@ -9,14 +10,15 @@ fun initGit(
     accessToken: String,
     developBranch: String,
     local: Boolean
-): Pair<Grgit, String> {
+): Pair<Grgit, JobInfo> {
     val tmp = Grgit.open {
         it.dir = project.rootDir
         it.credentials = Credentials(accessToken)
     }
     val head = tmp.log().first().id
+    val branch = tmp.branch.current().name
     if (local) {
-        return tmp to head
+        return tmp to JobInfo(head, branch)
     }
 
     val uri = tmp.remote.list().first().url
@@ -26,5 +28,5 @@ fun initGit(
         it.credentials = Credentials(accessToken)
         it.uri = uri
         it.refToCheckout = developBranch
-    } to head
+    } to JobInfo(head, branch)
 }

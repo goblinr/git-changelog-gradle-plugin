@@ -41,7 +41,7 @@ internal class ChangelogModel(
         val (entries, shortEntries) = matchToCharacterLimit(
             log = log,
             limit = request.characterLimit - request.currentVersion.length -
-                    request.templateExtraCharactersLength
+                request.templateExtraCharactersLength
         )
 
         return Changelog(

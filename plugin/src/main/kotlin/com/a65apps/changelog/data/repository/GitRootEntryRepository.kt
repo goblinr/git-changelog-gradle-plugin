@@ -1,6 +1,7 @@
 package com.a65apps.changelog.data.repository
 
 import com.a65apps.changelog.domain.entity.ChangelogEntry
+import com.a65apps.changelog.domain.entity.JobInfo
 import com.a65apps.changelog.domain.repository.RootEntryRepository
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.Project
@@ -14,7 +15,7 @@ internal class GitRootEntryRepository(
     private val project: Project,
     private val git: Grgit,
     private val local: Boolean,
-    private val head: String
+    private val info: JobInfo
 ) : RootEntryRepository {
 
     override fun findRootEntry(
@@ -24,10 +25,15 @@ internal class GitRootEntryRepository(
         if (!local) {
             fetch(lastReleaseBranch, currentReleaseBranch)
         }
+        val releaseBranch = if (currentReleaseBranch.isNotBlank()) {
+            currentReleaseBranch
+        } else {
+            info.branch
+        }
 
         checkout(lastReleaseBranch)
-        checkout(currentReleaseBranch)
-        checkout(head, true)
+        checkout(releaseBranch)
+        checkout(info.head, true)
 
         val hash = mergeBase(lastReleaseBranch)
 

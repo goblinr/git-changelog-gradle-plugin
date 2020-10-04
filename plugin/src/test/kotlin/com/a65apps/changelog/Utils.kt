@@ -21,7 +21,7 @@ fun Root.temporaryFolder() {
 
 fun GradleRunner.withJaCoCo(): GradleRunner {
     javaClass.classLoader.getResourceAsStream("testkit-gradle.properties")
-            ?.toFile(File(projectDir, "gradle.properties"))
+        ?.toFile(File(projectDir, "gradle.properties"))
     return this
 }
 

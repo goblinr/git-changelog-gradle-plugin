@@ -26,8 +26,10 @@ object MustacheRendererSpecification : Spek({
             val factory = mockk<MustacheFactory>(relaxed = true)
             val mustache = mockk<Mustache>(relaxed = true)
 
-            Given("на вход отрисовщика подаются данные из файловой системы, " +
-                    "шаблон: $templateName и выходной файл") {
+            Given(
+                "на вход отрисовщика подаются данные из файловой системы, " +
+                    "шаблон: $templateName и выходной файл"
+            ) {
                 every { ioRepository.template } returns template
                 every { ioRepository.templateName } returns templateName
                 every { ioRepository.output } returns output

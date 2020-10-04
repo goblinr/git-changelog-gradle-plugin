@@ -4,6 +4,7 @@ import com.a65apps.changelog.domain.entity.JobInfo
 import org.ajoberstar.grgit.Credentials
 import org.ajoberstar.grgit.Grgit
 import org.gradle.api.Project
+import java.io.ByteArrayOutputStream
 
 fun initGit(
     project: Project,
@@ -16,7 +17,15 @@ fun initGit(
         it.credentials = Credentials(accessToken)
     }
     val head = tmp.log().first().id
-    val branch = tmp.branch.current().name
+    val branch = ByteArrayOutputStream().run {
+        project.exec {
+            it.commandLine = "git rev-parse --abbrev-ref HEAD".split(" ")
+            it.workingDir = project.rootDir
+            it.standardOutput = this
+        }.assertNormalExitValue()
+        String(toByteArray()).trim()
+    }
+
     if (local) {
         return tmp to JobInfo(head, branch)
     }

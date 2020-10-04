@@ -17,4 +17,5 @@ open class ChangelogExtension {
     var templateExtraCharactersLength = 0
     var accessToken: String? = ""
     var local = false
+    var order = LogOrder.FIRST_TO_LAST
 }

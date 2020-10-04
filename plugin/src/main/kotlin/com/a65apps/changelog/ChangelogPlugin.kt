@@ -27,6 +27,7 @@ class ChangelogPlugin : Plugin<Project> {
             it.templateExtraCharactersLength = extension.templateExtraCharactersLength
             it.accessToken = extension.accessToken ?: ""
             it.local = extension.local
+            it.order = extension.order
         }
     }
 }

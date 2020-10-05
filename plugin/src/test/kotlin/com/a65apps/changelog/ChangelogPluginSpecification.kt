@@ -8,6 +8,7 @@ import org.gradle.testkit.runner.BuildResult
 import org.gradle.testkit.runner.GradleRunner
 import org.gradle.testkit.runner.TaskOutcome
 import org.spekframework.spek2.Spek
+import org.spekframework.spek2.dsl.TestBody
 import org.spekframework.spek2.style.gherkin.Feature
 import org.spekframework.spek2.style.gherkin.ScenarioBody
 import java.io.File
@@ -124,6 +125,39 @@ object ChangelogPluginSpecification : Spek({
             """.trimIndent()
             )
         }
+
+        Scenario("успешная генерация changelog.md на пуш тэга") {
+            val build = """
+                plugins {
+                    id "com.a65apps.changelog"
+                }
+                
+                changelog {
+                    currentVersion = "1.1"
+                    lastReleaseBranch = "rc_1.0"
+                    templateFile = "template/changelog.mustache"
+                    local = true
+                }
+            """.trimIndent()
+
+            test(
+                settings = settings,
+                template = template,
+                build = build,
+                expected = expected
+            ) { git ->
+                val author = Person("anon", "anon@anon.com")
+                val tag = git.tag.add {
+                    it.name = "1.1"
+                    it.tagger = author
+                    it.pointsTo = git.log().first()
+                }
+                println(tag)
+                git.checkout {
+                    it.branch = "1.1"
+                }
+            }
+        }
     }
 })
 
@@ -131,7 +165,8 @@ private fun ScenarioBody.test(
     settings: String,
     template: String,
     build: String,
-    expected: String
+    expected: String,
+    gitPrepare: TestBody.(Grgit) -> Unit = {}
 ) {
     lateinit var settingsFile: File
     lateinit var buildFile: File
@@ -222,6 +257,8 @@ private fun ScenarioBody.test(
         git.log().forEach {
             println(it.shortMessage)
         }
+
+        this.gitPrepare(git)
     }
 
     lateinit var result: BuildResult

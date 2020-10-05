@@ -19,12 +19,12 @@ fun initGit(
     val head = tmp.log().first().id
     val branch = ByteArrayOutputStream().run {
         project.exec {
-            it.commandLine = "git rev-parse --abbrev-ref HEAD".split(" ")
+            it.commandLine = "git branch --contains $head".split(" ")
             it.workingDir = project.rootDir
             it.standardOutput = this
         }.assertNormalExitValue()
         String(toByteArray()).trim()
-    }
+    }.findBranch() ?: ""
 
     if (local) {
         return tmp to JobInfo(head, branch)
@@ -39,3 +39,9 @@ fun initGit(
         it.refToCheckout = developBranch
     } to JobInfo(head, branch)
 }
+
+private fun String.findBranch() = split("\n").filter {
+    !it.contains("HEAD")
+}.map { it.replace("*", "") }
+    .map { it.trim() }
+    .firstOrNull()

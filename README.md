@@ -9,7 +9,7 @@ Plugin for automatic generation of changelog from git repository
 
 ```groovy
 plugins {
-    id 'com.a65apps.changelog' version '1.1.6'
+    id 'com.a65apps.changelog' version '1.1.7'
 }
 
 changelog {

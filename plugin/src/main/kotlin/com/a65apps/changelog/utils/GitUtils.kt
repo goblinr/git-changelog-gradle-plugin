@@ -19,7 +19,7 @@ fun initGit(
     val head = tmp.log().first().id
     val branch = ByteArrayOutputStream().run {
         project.exec {
-            it.commandLine = "git branch --contains $head".split(" ")
+            it.commandLine = "git branch -a --contains $head".split(" ")
             it.workingDir = project.rootDir
             it.standardOutput = this
         }.assertNormalExitValue()
@@ -43,5 +43,7 @@ fun initGit(
 private fun String.findBranch() = split("\n").filter {
     !it.contains("HEAD")
 }.map { it.replace("*", "") }
+    .map { it.replace("remotes/origin/", "") }
     .map { it.trim() }
+    .toSet()
     .firstOrNull()

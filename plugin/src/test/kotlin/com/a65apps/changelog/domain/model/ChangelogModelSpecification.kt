@@ -273,7 +273,7 @@ object ChangelogModelSpecification : Spek({
         }
     }
 
-    Feature("плагин должен уметь управлять пордком вывода записей") {
+    Feature("плагин должен уметь управлять порядком вывода записей") {
         val currentName = "rc_1.1"
         val rcName = "rc_1.0"
         val rootCommit = "a78bfa2d3763fd3db814b79a8aac8dcfea323ee3"
@@ -344,6 +344,113 @@ object ChangelogModelSpecification : Spek({
                     entries = allCommits.map {
                         it.copy(message = "- ${it.message}")
                     }
+                )
+            )
+        }
+    }
+
+    Feature("плагин должен уметь настраивать минимальное количество записей, " +
+        "после которых старые записи из Folded секции начнут удаляться") {
+        val currentName = "rc_1.1"
+        val rcName = "rc_1.0"
+        val rootCommit = "a78bfa2d3763fd3db814b79a8aac8dcfea323ee3"
+
+        val allCommits = listOf(
+            ChangelogEntry(
+                hash = "d2a85293746a6b11618e2bf1a68747ffdb2593a6",
+                taskId = "1",
+                message = "1: message",
+                foldId = "1(d2a85293)"
+            ),
+            ChangelogEntry(
+                hash = "6ea76e31602cb734e24e094403ac0dabf20b52a2",
+                taskId = "2",
+                message = "2: message",
+                foldId = "2(6ea76e31)"
+            )
+        )
+
+        setUp()
+
+        Scenario("Выход за пределы ограничения должен удалить запись из Folded секции") {
+            dataSetUp(
+                currentName = currentName,
+                rcName = rcName,
+                rootCommit = rootCommit,
+                allCommits = allCommits
+            )
+
+            test(
+                request = Request(
+                    currentVersion = currentName,
+                    lastReleaseBranch = rcName,
+                    characterLimit = 20,
+                    entryDash = "-",
+                    templateExtraCharactersLength = 0,
+                    currentReleaseBranch = currentName,
+                    minEntryCount = 1
+                ),
+                expected = Changelog(
+                    title = currentName,
+                    entries = listOf(
+                        allCommits.first().copy(
+                            message = "- ${allCommits.first().message}"
+                        )
+                    )
+                )
+            )
+        }
+
+        Scenario("Выход за пределы лимита при порядке от последнего к первому") {
+            dataSetUp(
+                currentName = currentName,
+                rcName = rcName,
+                rootCommit = rootCommit,
+                allCommits = allCommits
+            )
+
+            test(
+                request = Request(
+                    currentVersion = currentName,
+                    lastReleaseBranch = rcName,
+                    characterLimit = 20,
+                    entryDash = "-",
+                    templateExtraCharactersLength = 0,
+                    currentReleaseBranch = currentName,
+                    minEntryCount = 1,
+                    order = LogOrder.LAST_TO_FIRST
+                ),
+                expected = Changelog(
+                    title = currentName,
+                    entries = listOf(
+                        allCommits.first().copy(
+                            message = "- ${allCommits.first().message}"
+                        )
+                    )
+                )
+            )
+        }
+
+        Scenario("в лимит не умещается ни одна запись") {
+            dataSetUp(
+                currentName = currentName,
+                rcName = rcName,
+                rootCommit = rootCommit,
+                allCommits = allCommits
+            )
+
+            test(
+                request = Request(
+                    currentVersion = currentName,
+                    lastReleaseBranch = rcName,
+                    characterLimit = 1,
+                    entryDash = "-",
+                    templateExtraCharactersLength = 0,
+                    currentReleaseBranch = currentName,
+                    minEntryCount = 1
+                ),
+                expected = Changelog(
+                    title = currentName
                 )
             )
         }

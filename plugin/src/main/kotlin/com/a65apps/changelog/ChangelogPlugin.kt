@@ -28,6 +28,7 @@ class ChangelogPlugin : Plugin<Project> {
             it.accessToken = extension.accessToken ?: ""
             it.local = extension.local
             it.order = extension.order
+            it.minEntryCount = extension.minEntryCount
         }
     }
 }

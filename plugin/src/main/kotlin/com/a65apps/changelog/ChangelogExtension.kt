@@ -4,6 +4,7 @@ internal const val DEFAULT_CHARACTER_LIMIT = 5000
 internal const val DEFAULT_CURRENT_VERSION = "Unreleased"
 internal const val DEFAULT_ENTRY_DASH = "-"
 internal const val DEVELOP_BRANCH = "develop"
+internal const val MIN_ENTRY_COUNT = 10
 
 open class ChangelogExtension {
     var currentVersion = DEFAULT_CURRENT_VERSION
@@ -18,4 +19,5 @@ open class ChangelogExtension {
     var accessToken: String? = ""
     var local = false
     var order = LogOrder.FIRST_TO_LAST
+    var minEntryCount = MIN_ENTRY_COUNT
 }

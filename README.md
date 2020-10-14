@@ -9,7 +9,7 @@ Plugin for automatic generation of changelog from git repository
 
 ```groovy
 plugins {
-    id 'com.a65apps.changelog' version '1.1.8'
+    id 'com.a65apps.changelog' version '1.1.9'
 }
 
 changelog {
@@ -63,5 +63,6 @@ changelog {
     entryDash = "*"          // Custom log entry dash, default is '-'
     templateExtraCharactersLength = 29  // Extra character length for fine grained character limit configuration
     order = LogOrder.LAST_TO_FIRST  // Order of log entries. Default is LogOrder.FIRST_TO_LAST
+    minEntryCount = 10      // Minimal entry count
 }
 ```

@@ -49,7 +49,9 @@ internal class ChangelogModel(
         val (entries, shortEntries) = matchToCharacterLimit(
             log = log,
             limit = request.characterLimit - request.currentVersion.length -
-                request.templateExtraCharactersLength
+                request.templateExtraCharactersLength,
+            minEntryCount = request.minEntryCount,
+            order = request.order
         )
 
         return Changelog(
@@ -61,7 +63,9 @@ internal class ChangelogModel(
 
     private fun matchToCharacterLimit(
         log: List<ChangelogEntry>,
-        limit: Int
+        limit: Int,
+        minEntryCount: Int,
+        order: LogOrder
     ): Pair<List<ChangelogEntry>, List<ChangelogEntry>> {
         var short = listOf<ChangelogEntry>()
         var long = log
@@ -71,13 +75,32 @@ internal class ChangelogModel(
             }
 
         while (count(long) + count(short, true) > limit) {
-            val entry = long.firstOrNull()
-            entry?.let {
-                short = short + it
-                long = long - it
-            } ?: break
+            if (long.size <= minEntryCount && short.isNotEmpty()) {
+                short = order.removeLast(short)
+            } else {
+                val entry = order.takeEntry(long)
+                entry?.let {
+                    short = order.add(short, it)
+                    long = long - it
+                } ?: break
+            }
         }
 
         return long to short
+    }
+
+    private fun LogOrder.takeEntry(list: List<ChangelogEntry>) = when (this) {
+        LogOrder.FIRST_TO_LAST -> list.firstOrNull()
+        LogOrder.LAST_TO_FIRST -> list.lastOrNull()
+    }
+
+    private fun LogOrder.add(list: List<ChangelogEntry>, entry: ChangelogEntry) = when (this) {
+        LogOrder.FIRST_TO_LAST -> list + entry
+        LogOrder.LAST_TO_FIRST -> listOf(entry) + list
+    }
+
+    private fun LogOrder.removeLast(list: List<ChangelogEntry>) = when (this) {
+        LogOrder.FIRST_TO_LAST -> list - list.last()
+        LogOrder.LAST_TO_FIRST -> list - list.first()
     }
 }

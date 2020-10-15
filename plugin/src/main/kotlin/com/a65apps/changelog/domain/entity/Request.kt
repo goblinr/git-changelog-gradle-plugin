@@ -1,6 +1,7 @@
 package com.a65apps.changelog.domain.entity
 
 import com.a65apps.changelog.LogOrder
+import com.a65apps.changelog.MIN_ENTRY_COUNT
 
 data class Request(
     val currentVersion: String,
@@ -9,5 +10,6 @@ data class Request(
     val characterLimit: Int,
     val entryDash: String,
     val templateExtraCharactersLength: Int,
-    val order: LogOrder = LogOrder.FIRST_TO_LAST
+    val order: LogOrder = LogOrder.FIRST_TO_LAST,
+    val minEntryCount: Int = MIN_ENTRY_COUNT
 )

@@ -12,8 +12,8 @@ repositories {
 changelog {
     def token = System.getenv().get("TOKEN")
 
-    currentVersion = '1.1.8'
-    lastReleaseBranch = "releases/5"
+    currentVersion = '1.1.9'
+    lastReleaseBranch = "releases/6"
     templateFile = "template/changelog.mustache"
     accessToken = token
     order = LogOrder.LAST_TO_FIRST

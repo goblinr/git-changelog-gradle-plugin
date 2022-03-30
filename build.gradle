@@ -2,11 +2,11 @@ import com.a65apps.changelog.LogOrder
 
 plugins {
     id 'com.a65apps.changelog'
-    id 'io.gitlab.arturbosch.detekt' version '1.14.1'
+    id 'io.gitlab.arturbosch.detekt' version '1.19.0'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 changelog {
@@ -19,7 +19,7 @@ changelog {
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.14.1"
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
 }
 
 detekt {

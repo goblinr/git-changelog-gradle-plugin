@@ -15,6 +15,7 @@ import com.github.mustachejava.DefaultMustacheFactory
 import org.gradle.api.Project
 import java.io.File
 
+@Suppress("LongParameterList")
 class PluginContainer(
     private val project: Project,
     private val template: File,

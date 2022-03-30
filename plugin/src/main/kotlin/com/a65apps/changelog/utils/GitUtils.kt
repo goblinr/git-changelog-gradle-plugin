@@ -9,12 +9,14 @@ import java.io.ByteArrayOutputStream
 fun initGit(
     project: Project,
     accessToken: String,
+    userName: String?,
     developBranch: String,
     local: Boolean
 ): Pair<Grgit, JobInfo> {
     val tmp = Grgit.open {
         it.dir = project.rootDir
-        it.credentials = Credentials(accessToken)
+        it.credentials =
+            userName?.let { name -> Credentials(name, accessToken) } ?: Credentials(accessToken)
     }
     val head = tmp.log().first().id
     val branch = ByteArrayOutputStream().run {
@@ -34,7 +36,8 @@ fun initGit(
 
     return Grgit.clone {
         it.dir = "${project.buildDir}/sources"
-        it.credentials = Credentials(accessToken)
+        it.credentials =
+            userName?.let { name -> Credentials(name, accessToken) } ?: Credentials(accessToken)
         it.uri = uri
         it.refToCheckout = developBranch
     } to JobInfo(head, branch)

@@ -494,7 +494,7 @@ private fun ScenarioBody.test(
         result = ChangelogModel(rootEntryRepository, logEntriesRepository).compute(request)
     }
 
-    Then("результат должен соответствывать: $expected") {
+    Then("результат должен соответствовать: $expected") {
         assert(expected == result) {
             "\nexpected: $expected\nactual:   $result"
         }

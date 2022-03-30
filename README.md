@@ -9,7 +9,7 @@ Plugin for automatic generation of changelog from git repository
 
 ```groovy
 plugins {
-    id 'com.a65apps.changelog' version '1.1.9'
+    id 'com.a65apps.changelog' version '1.1.10'
 }
 
 changelog {
@@ -19,6 +19,7 @@ changelog {
     lastReleaseBranch = "releases/1"              // Last release branch, required field
     templateFile = "template/changelog.mustache"  // Template for render changelog.md, required field
     accessToken = token                           // Token for access to a Git repository, default is empty
+    userName = "my_user_name"                     // Optional user name for Git access
     developBranch = 'master'                      // Develop branch, default is 'develop'
 }
 ```

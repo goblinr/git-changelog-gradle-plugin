@@ -26,6 +26,7 @@ class ChangelogPlugin : Plugin<Project> {
             it.entryDash = extension.entryDash
             it.templateExtraCharactersLength = extension.templateExtraCharactersLength
             it.accessToken = extension.accessToken ?: ""
+            it.userName = extension.userName
             it.local = extension.local
             it.order = extension.order
             it.minEntryCount = extension.minEntryCount

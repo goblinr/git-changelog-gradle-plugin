@@ -2,25 +2,25 @@ import com.a65apps.changelog.LogOrder
 
 plugins {
     id 'com.a65apps.changelog'
-    id 'io.gitlab.arturbosch.detekt' version '1.14.1'
+    id 'io.gitlab.arturbosch.detekt' version '1.19.0'
 }
 
 repositories {
-    jcenter()
+    mavenCentral()
 }
 
 changelog {
     def token = System.getenv().get("TOKEN")
 
-    currentVersion = '1.1.9'
-    lastReleaseBranch = "releases/6"
+    currentVersion = "1.1.10"
+    lastReleaseBranch = "releases/7"
     templateFile = "template/changelog.mustache"
     accessToken = token
     order = LogOrder.LAST_TO_FIRST
 }
 
 dependencies {
-    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.14.1"
+    detektPlugins "io.gitlab.arturbosch.detekt:detekt-formatting:1.19.0"
 }
 
 detekt {

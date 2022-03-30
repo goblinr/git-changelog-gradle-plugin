@@ -4,6 +4,7 @@ import com.a65apps.changelog.di.PluginContainer
 import com.a65apps.changelog.domain.entity.Request
 import org.gradle.api.DefaultTask
 import org.gradle.api.tasks.Input
+import org.gradle.api.tasks.Optional
 import org.gradle.api.tasks.OutputFile
 import org.gradle.api.tasks.TaskAction
 import java.io.File
@@ -43,6 +44,10 @@ open class ChangelogTask : DefaultTask() {
     var accessToken = ""
 
     @get:Input
+    @get:Optional
+    var userName: String? = null
+
+    @get:Input
     var local = false
 
     @get:Input
@@ -72,6 +77,7 @@ open class ChangelogTask : DefaultTask() {
         val container = PluginContainer(
             project = project,
             accessToken = accessToken,
+            userName = userName,
             developBranch = developBranch,
             template = project.file(templateFile),
             output = file,

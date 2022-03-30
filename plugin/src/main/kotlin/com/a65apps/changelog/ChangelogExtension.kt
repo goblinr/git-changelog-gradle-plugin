@@ -17,6 +17,7 @@ open class ChangelogExtension {
     var entryDash = DEFAULT_ENTRY_DASH
     var templateExtraCharactersLength = 0
     var accessToken: String? = ""
+    var userName: String? = null
     var local = false
     var order = LogOrder.FIRST_TO_LAST
     var minEntryCount = MIN_ENTRY_COUNT

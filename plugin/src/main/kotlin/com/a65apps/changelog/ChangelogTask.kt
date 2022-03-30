@@ -43,6 +43,9 @@ open class ChangelogTask : DefaultTask() {
     var accessToken = ""
 
     @get:Input
+    var userName: String? = null
+
+    @get:Input
     var local = false
 
     @get:Input
@@ -72,6 +75,7 @@ open class ChangelogTask : DefaultTask() {
         val container = PluginContainer(
             project = project,
             accessToken = accessToken,
+            userName = userName,
             developBranch = developBranch,
             template = project.file(templateFile),
             output = file,

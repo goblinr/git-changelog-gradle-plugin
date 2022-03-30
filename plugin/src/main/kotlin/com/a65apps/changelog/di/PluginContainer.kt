@@ -20,11 +20,12 @@ class PluginContainer(
     private val template: File,
     private val output: File,
     accessToken: String,
+    userName: String?,
     developBranch: String,
     private val local: Boolean
 ) {
 
-    private val git = initGit(project, accessToken, developBranch, local)
+    private val git = initGit(project, accessToken, userName, developBranch, local)
     private val mustacheFactory = DefaultMustacheFactory()
 
     fun provideChangelogInteractor(): ChangelogInteractor =
